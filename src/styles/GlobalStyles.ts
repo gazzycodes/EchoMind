@@ -1,5 +1,7 @@
 import { createGlobalStyle } from 'styled-components';
-import { Theme } from './theme';
+import { theme } from './theme';
+
+type Theme = typeof theme;
 
 export const GlobalStyles = createGlobalStyle<{ theme: Theme }>`
   /* Import Inter font from Google Fonts */

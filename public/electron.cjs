@@ -16,9 +16,7 @@ function createWindow() {
       nodeIntegration: false,
       contextIsolation: true,
       enableRemoteModule: false,
-      preload: path.join(__dirname, 'preload.cjs'),
-      webSecurity: false, // Allow loading local resources
-      allowRunningInsecureContent: true
+      preload: path.join(__dirname, 'preload.cjs')
     },
     icon: path.join(__dirname, 'icon.png'),
     show: false,
@@ -31,10 +29,14 @@ function createWindow() {
     ? 'http://localhost:5173'
     : `file://${path.join(__dirname, '../dist/index.html')}`;
 
+  console.log('isDev:', isDev);
+  console.log('Loading URL:', startUrl);
+
   mainWindow.loadURL(startUrl);
 
   // Show window when ready
   mainWindow.once('ready-to-show', () => {
+    console.log('Window ready to show');
     mainWindow.show();
   });
 
@@ -52,7 +54,19 @@ function createWindow() {
     return false;
   });
 
-  // DevTools can be opened manually with Ctrl+Shift+I if needed
+  // Open DevTools in development for debugging
+  if (isDev) {
+    mainWindow.webContents.openDevTools();
+  }
+
+  // Add error handling
+  mainWindow.webContents.on('did-fail-load', (event, errorCode, errorDescription, validatedURL) => {
+    console.error('Failed to load:', errorCode, errorDescription, validatedURL);
+  });
+
+  mainWindow.webContents.on('crashed', () => {
+    console.error('Renderer process crashed');
+  });
 }
 
 function createTray() {
