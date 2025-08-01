@@ -35,6 +35,17 @@ const SoundItem = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing.md};
+  padding: ${({ theme }) => theme.spacing.lg};
+  background: ${({ theme }) => theme.colors.background.tertiary};
+  border-radius: ${({ theme }) => theme.borderRadius.lg};
+  border: 1px solid ${({ theme }) => theme.colors.border.primary};
+  transition: all ${({ theme }) => theme.transitions.normal};
+
+  &:hover {
+    border-color: ${({ theme }) => theme.colors.accent.primary};
+    box-shadow: ${({ theme }) => theme.shadows.md};
+    transform: translateY(-1px);
+  }
 `;
 
 const SoundHeader = styled.div`
@@ -44,14 +55,22 @@ const SoundHeader = styled.div`
 `;
 
 const SoundIcon = styled.div`
-  width: 24px;
-  height: 24px;
-  border-radius: ${({ theme }) => theme.borderRadius.sm};
-  background: ${({ theme }) => theme.colors.accent.primary};
+  width: 32px;
+  height: 32px;
+  border-radius: ${({ theme }) => theme.borderRadius.md};
+  background: linear-gradient(135deg, ${({ theme }) => theme.colors.accent.primary}, ${({ theme }) => theme.colors.accent.secondary});
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 14px;
+  font-size: 16px;
+  color: white;
+  box-shadow: ${({ theme }) => theme.shadows.md};
+  transition: all ${({ theme }) => theme.transitions.fast};
+
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: ${({ theme }) => theme.shadows.lg};
+  }
 `;
 
 const SoundName = styled.h3`
@@ -70,6 +89,11 @@ const TimerDisplay = styled.div`
   color: ${({ theme }) => theme.colors.accent.primary};
   font-family: ${({ theme }) => theme.typography.fontFamily.mono};
   margin: ${({ theme }) => theme.spacing.lg} 0;
+  text-shadow: 0 0 20px ${({ theme }) => theme.colors.accent.primary}40;
+  background: linear-gradient(135deg, ${({ theme }) => theme.colors.accent.primary}, ${({ theme }) => theme.colors.accent.secondary});
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 `;
 
 const TimerControls = styled.div`

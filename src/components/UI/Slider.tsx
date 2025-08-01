@@ -53,7 +53,9 @@ const SliderTrack = styled.div`
   }
 `;
 
-const SliderFill = styled.div<{ percentage: number }>`
+const SliderFill = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== 'percentage',
+})<{ percentage: number }>`
   position: absolute;
   top: 0;
   left: 0;
@@ -64,7 +66,9 @@ const SliderFill = styled.div<{ percentage: number }>`
   transition: ${({ theme }) => theme.transitions.fast};
 `;
 
-const SliderThumb = styled.div<{ percentage: number; isDragging: boolean }>`
+const SliderThumb = styled.div.withConfig({
+  shouldForwardProp: (prop) => !['percentage', 'isDragging'].includes(prop),
+})<{ percentage: number; isDragging: boolean }>`
   position: absolute;
   top: 50%;
   left: ${({ percentage }) => percentage}%;

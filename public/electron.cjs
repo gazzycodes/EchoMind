@@ -54,10 +54,7 @@ function createWindow() {
     return false;
   });
 
-  // Open DevTools in development for debugging
-  if (isDev) {
-    mainWindow.webContents.openDevTools();
-  }
+  // DevTools can be opened manually with Ctrl+Shift+I if needed
 
   // Add error handling
   mainWindow.webContents.on('did-fail-load', (event, errorCode, errorDescription, validatedURL) => {

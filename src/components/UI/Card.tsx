@@ -46,26 +46,38 @@ const getPadding = (padding: CardProps['padding']) => {
   }
 };
 
-const StyledCard = styled.div<CardProps>`
+const StyledCard = styled.div.withConfig({
+  shouldForwardProp: (prop) => !['variant', 'padding', 'hoverable'].includes(prop),
+})<CardProps>`
   border-radius: ${({ theme }) => theme.borderRadius.lg};
   transition: ${({ theme }) => theme.transitions.normal};
-  
+
   ${({ variant }) => getCardVariant(variant)}
   ${({ padding }) => getPadding(padding)}
-  
+
   ${({ hoverable, onClick }) => hoverable || onClick ? css`
     cursor: pointer;
-    
+
     &:hover {
       transform: translateY(-2px);
       box-shadow: ${({ theme }) => theme.shadows.xl};
       border-color: ${({ theme }) => theme.colors.border.secondary};
     }
-    
+
     &:active {
       transform: translateY(0);
     }
   ` : ''}
+
+  /* Better visual hierarchy for headings */
+  h2 {
+    color: ${({ theme }) => theme.colors.text.primary};
+    font-size: ${({ theme }) => theme.typography.fontSize.xl};
+    font-weight: ${({ theme }) => theme.typography.fontWeight.semibold};
+    margin: 0 0 ${({ theme }) => theme.spacing.lg} 0;
+    border-bottom: 2px solid ${({ theme }) => theme.colors.accent.primary};
+    padding-bottom: ${({ theme }) => theme.spacing.sm};
+  }
 `;
 
 export const Card: React.FC<CardProps> = ({
