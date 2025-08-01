@@ -1,6 +1,6 @@
 const { app, BrowserWindow, Tray, Menu, ipcMain, nativeImage } = require('electron');
 const path = require('path');
-const isDev = process.env.NODE_ENV === 'development';
+const isDev = !app.isPackaged;
 
 let mainWindow;
 let tray;
@@ -16,7 +16,7 @@ function createWindow() {
       nodeIntegration: false,
       contextIsolation: true,
       enableRemoteModule: false,
-      preload: path.join(__dirname, 'preload.js')
+      preload: path.join(__dirname, 'preload.cjs')
     },
     icon: path.join(__dirname, 'icon.png'),
     show: false,
@@ -25,10 +25,13 @@ function createWindow() {
   });
 
   // Load the app
-  const startUrl = isDev 
-    ? 'http://localhost:5173' 
+  const startUrl = isDev
+    ? 'http://localhost:5173'
     : `file://${path.join(__dirname, '../dist/index.html')}`;
-  
+
+  console.log('isDev:', isDev);
+  console.log('Loading URL:', startUrl);
+
   mainWindow.loadURL(startUrl);
 
   // Show window when ready
