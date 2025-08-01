@@ -16,7 +16,9 @@ function createWindow() {
       nodeIntegration: false,
       contextIsolation: true,
       enableRemoteModule: false,
-      preload: path.join(__dirname, 'preload.cjs')
+      preload: path.join(__dirname, 'preload.cjs'),
+      webSecurity: false, // Allow loading local resources
+      allowRunningInsecureContent: true
     },
     icon: path.join(__dirname, 'icon.png'),
     show: false,
@@ -107,6 +109,13 @@ function createTray() {
     }
   });
 }
+
+// Disable GPU cache to avoid permission errors
+app.commandLine.appendSwitch('--disable-gpu-sandbox');
+app.commandLine.appendSwitch('--disable-software-rasterizer');
+app.commandLine.appendSwitch('--disable-gpu');
+app.commandLine.appendSwitch('--no-sandbox');
+app.commandLine.appendSwitch('--disable-dev-shm-usage');
 
 // App event handlers
 app.whenReady().then(() => {
