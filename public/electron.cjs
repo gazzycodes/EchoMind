@@ -29,9 +29,6 @@ function createWindow() {
     ? 'http://localhost:5173'
     : `file://${path.join(__dirname, '../dist/index.html')}`;
 
-  console.log('isDev:', isDev);
-  console.log('Loading URL:', startUrl);
-
   mainWindow.loadURL(startUrl);
 
   // Show window when ready
@@ -53,10 +50,7 @@ function createWindow() {
     return false;
   });
 
-  // Open DevTools in development
-  if (isDev) {
-    mainWindow.webContents.openDevTools();
-  }
+  // DevTools can be opened manually with Ctrl+Shift+I if needed
 }
 
 function createTray() {
