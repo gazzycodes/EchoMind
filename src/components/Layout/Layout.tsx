@@ -53,10 +53,11 @@ const Main = styled.main`
   flex: 1;
   display: flex;
   flex-direction: column;
-  padding: ${({ theme }) => theme.spacing.xl};
-  max-width: 1200px;
+  padding: 0;
+  max-width: 1400px;
   margin: 0 auto;
   width: 100%;
+  overflow: hidden;
 `;
 
 const Footer = styled.footer`

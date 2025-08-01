@@ -9,42 +9,50 @@ import { Button } from './components/UI/Button';
 import { Slider } from './components/UI/Slider';
 import styled from 'styled-components';
 
-const AppGrid = styled.div`
+const AppContainer = styled.div`
+  padding: ${({ theme }) => theme.spacing.lg};
+  max-width: 1200px;
+  margin: 0 auto;
+  min-height: calc(100vh - 120px);
+`;
+
+const TopSection = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: ${({ theme }) => theme.spacing.xl};
-  margin-bottom: ${({ theme }) => theme.spacing.xl};
+  gap: ${({ theme }) => theme.spacing.lg};
+  margin-bottom: ${({ theme }) => theme.spacing.lg};
 
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     grid-template-columns: 1fr;
+    gap: ${({ theme }) => theme.spacing.md};
   }
 `;
 
 const SoundControlsCard = styled(Card)`
-  grid-column: 1 / -1;
+  /* No specific grid positioning needed */
 `;
 
 const SoundGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: ${({ theme }) => theme.spacing.lg};
-  margin-top: ${({ theme }) => theme.spacing.lg};
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: ${({ theme }) => theme.spacing.sm};
+  margin-top: ${({ theme }) => theme.spacing.md};
 `;
 
 const SoundItem = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing.md};
-  padding: ${({ theme }) => theme.spacing.lg};
-  background: ${({ theme }) => theme.colors.background.tertiary};
-  border-radius: ${({ theme }) => theme.borderRadius.lg};
+  gap: ${({ theme }) => theme.spacing.sm};
+  padding: ${({ theme }) => theme.spacing.sm};
+  background: ${({ theme }) => theme.colors.background.secondary};
+  border-radius: ${({ theme }) => theme.borderRadius.md};
   border: 1px solid ${({ theme }) => theme.colors.border.primary};
-  transition: all ${({ theme }) => theme.transitions.normal};
+  transition: all ${({ theme }) => theme.transitions.fast};
+  min-height: 80px;
 
   &:hover {
     border-color: ${({ theme }) => theme.colors.accent.primary};
-    box-shadow: ${({ theme }) => theme.shadows.md};
-    transform: translateY(-1px);
+    background: ${({ theme }) => theme.colors.background.tertiary};
   }
 `;
 
@@ -55,32 +63,32 @@ const SoundHeader = styled.div`
 `;
 
 const SoundIcon = styled.div`
-  width: 32px;
-  height: 32px;
-  border-radius: ${({ theme }) => theme.borderRadius.md};
-  background: linear-gradient(135deg, ${({ theme }) => theme.colors.accent.primary}, ${({ theme }) => theme.colors.accent.secondary});
+  width: 24px;
+  height: 24px;
+  border-radius: ${({ theme }) => theme.borderRadius.sm};
+  background: ${({ theme }) => theme.colors.accent.primary};
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 16px;
+  font-size: 12px;
   color: white;
-  box-shadow: ${({ theme }) => theme.shadows.md};
-  transition: all ${({ theme }) => theme.transitions.fast};
-
-  &:hover {
-    transform: scale(1.05);
-    box-shadow: ${({ theme }) => theme.shadows.lg};
-  }
+  flex-shrink: 0;
 `;
 
 const SoundName = styled.h3`
-  font-size: ${({ theme }) => theme.typography.fontSize.base};
+  font-size: ${({ theme }) => theme.typography.fontSize.sm};
   font-weight: ${({ theme }) => theme.typography.fontWeight.medium};
   color: ${({ theme }) => theme.colors.text.primary};
+  margin: 0;
+  flex: 1;
 `;
 
 const TimerCard = styled(Card)`
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 280px;
 `;
 
 const TimerDisplay = styled.div`
@@ -103,13 +111,21 @@ const TimerControls = styled.div`
   margin-top: ${({ theme }) => theme.spacing.lg};
 `;
 
-const PresetsCard = styled(Card)``;
+const BottomSection = styled.div`
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: ${({ theme }) => theme.spacing.lg};
+`;
+
+const PresetsCard = styled(Card)`
+  /* No specific positioning needed */
+`;
 
 const PresetGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  gap: ${({ theme }) => theme.spacing.md};
-  margin-top: ${({ theme }) => theme.spacing.lg};
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: ${({ theme }) => theme.spacing.sm};
+  margin-top: ${({ theme }) => theme.spacing.md};
 `;
 
 const PresetButton = styled(Button)`
@@ -117,6 +133,8 @@ const PresetButton = styled(Button)`
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing.xs};
   font-size: ${({ theme }) => theme.typography.fontSize.sm};
+  padding: ${({ theme }) => theme.spacing.sm};
+  min-width: 100px;
 `;
 
 function App() {
@@ -176,29 +194,30 @@ function App() {
     <ThemeProvider theme={theme}>
       <GlobalStyles />
       <Layout headerActions={headerActions}>
-        <AppGrid>
-          <SoundControlsCard>
-            <h2>Sound Layers</h2>
-            <SoundGrid>
-              {sounds.map((sound) => (
-                <SoundItem key={sound.id}>
-                  <SoundHeader>
-                    <SoundIcon>{sound.icon}</SoundIcon>
-                    <SoundName>{sound.name}</SoundName>
-                  </SoundHeader>
-                  <Slider
-                    value={soundLevels[sound.id as keyof typeof soundLevels]}
-                    onChange={(value) => handleSoundChange(sound.id, value)}
-                    max={1}
-                    step={0.01}
-                    showValue={true}
-                  />
-                </SoundItem>
-              ))}
-            </SoundGrid>
-          </SoundControlsCard>
+        <AppContainer>
+          <TopSection>
+            <SoundControlsCard>
+              <h2>Sound Layers</h2>
+              <SoundGrid>
+                {sounds.map((sound) => (
+                  <SoundItem key={sound.id}>
+                    <SoundHeader>
+                      <SoundIcon>{sound.icon}</SoundIcon>
+                      <SoundName>{sound.name}</SoundName>
+                    </SoundHeader>
+                    <Slider
+                      value={soundLevels[sound.id as keyof typeof soundLevels]}
+                      onChange={(value) => handleSoundChange(sound.id, value)}
+                      max={1}
+                      step={0.01}
+                      showValue={true}
+                    />
+                  </SoundItem>
+                ))}
+              </SoundGrid>
+            </SoundControlsCard>
 
-          <TimerCard>
+            <TimerCard>
             <h2>Pomodoro Timer</h2>
             <TimerDisplay>
               {formatTime(timerMinutes, timerSeconds)}
@@ -214,19 +233,22 @@ function App() {
               <Button variant="secondary">Reset</Button>
             </TimerControls>
           </TimerCard>
+          </TopSection>
 
-          <PresetsCard>
-            <h2>Sound Presets</h2>
-            <PresetGrid>
-              {presets.map((preset) => (
-                <PresetButton key={preset.name} variant="secondary">
-                  <span style={{ fontSize: '20px' }}>{preset.icon}</span>
-                  {preset.name}
-                </PresetButton>
-              ))}
-            </PresetGrid>
-          </PresetsCard>
-        </AppGrid>
+          <BottomSection>
+            <PresetsCard>
+              <h2>Sound Presets</h2>
+              <PresetGrid>
+                {presets.map((preset) => (
+                  <PresetButton key={preset.name} variant="secondary">
+                    <span style={{ fontSize: '20px' }}>{preset.icon}</span>
+                    {preset.name}
+                  </PresetButton>
+                ))}
+              </PresetGrid>
+            </PresetsCard>
+          </BottomSection>
+        </AppContainer>
       </Layout>
     </ThemeProvider>
   );
